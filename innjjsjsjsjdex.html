@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI - Sovereign Matrix</title>
+    
+    <!-- 🚀 SEO बूस्टर: Google सर्च में नंबर #1 पर आने के लिए -->
+    <meta name="description" content="Sultan AI is the ultimate blazing-fast platform for AI agents and real-time design previews. Built by Sultan Owner.">
+    <meta name="keywords" content="Sultan AI, Bolt alternative, free AI builder, Sultan Node">
+    
+    <style>
+        body { margin: 0; background: #05070a; color: #fff; font-family: system-ui, sans-serif; display: flex; justify-content: center; overflow: hidden; user-select: none; }
+        .app-frame { width: 100vw; max-width: 450px; height: 100vh; background: linear-gradient(180deg, #090b0e 65%, #1a120c 100%); position: relative; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* 1. ज़ूम-इन (Zoom-In) एनिमेटेड स्प्लैश स्क्रीन लोगो */
+        .splash-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #05070a; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
+        .logo-circle { width: 100px; height: 100px; background: #11141a; border: 3px solid #ffca28; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 40px; box-shadow: 0 0 25px rgba(255, 202, 40, 0.6); animation: zoomInLogo 1.8s ease-out forwards; }
+        .logo-text { color: #ffca28; font-weight: bold; font-size: 26px; margin-top: 15px; letter-spacing: 3px; text-shadow: 0 0 10px rgba(255,202,40,0.5); }
+        @keyframes zoomInLogo { 0% { transform: scale(0.3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* टॉप हेडर बार और थ्री-डॉट सेटिंग्स */
+        .top-header { display: flex; justify-content: space-between; padding: 15px 20px; align-items: center; position: relative; }
+        .menu-icon { font-size: 20px; color: #ffca28; cursor: pointer; background: #11141a; padding: 8px 12px; border-radius: 50%; border: 1px solid #222; }
+        .brand-title { font-size: 22px; font-weight: bold; background: linear-gradient(45deg, #ffca28, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1.5px; }
+        .settings-dot-btn { font-size: 22px; color: #ffca28; cursor: pointer; padding: 5px; user-select: none; }
+        
+        .settings-dropdown-menu { 
+            display: none; position: absolute; top: 55px; right: 20px; width: 180px; 
+            background: #11141b; border: 1px solid #ffca28; border-radius: 12px; 
+            padding: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.8); z-index: 100;
+        }
+        .settings-opt { padding: 10px 12px; font-size: 13px; color: #ccc; cursor: pointer; border-radius: 8px; }
+        .settings-opt:hover { background: #1c2230; color: #ffca28; }
+        .settings-opt.opt-logout { color: #ff4444; border-top: 1px solid #222; margin-top: 5px; }
+
+        /* लाइव सिस्टम स्टेटस लॉग्स पट्टी */
+        .system-status-logs { display: flex; justify-content: space-around; font-size: 10px; color: #44536e; font-family: monospace; margin: 2px 0; }
+        .status-dot { color: #238636; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* मुख्य कंटेंट एरिया */
+        .main-container { flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 10px 20px; text-align: center; position: relative; }
+        .tools-pill { background: rgba(255, 202, 40, 0.08); border: 1px solid rgba(255, 202, 40, 0.3); padding: 8px 16px; border-radius: 20px; font-size: 11px; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 500; cursor: pointer; }
+        .tools-icons { background: linear-gradient(45deg, #ffca28, #fff3b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; }
+        
+        /* 🎫 ३-फ्री टोकन काउंटर बैज */
+        .token-counter-badge { font-size: 11px; color: #ffca28; background: #11141b; border: 1px solid #ffca28; padding: 4px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: bold; }
+        .mind-headline { font-size: 20px; font-weight: 600; margin-bottom: 15px; color: #f0f0f0; }
+        .view-section { display: none; width: 100%; height: 100%; }
+        .view-section.active-view { display: block; }
+
+        /* 👑 लेफ्ट-राइट साइड में डबल गोल्डन पिलर/स्ट्रोक वाला प्रिव्यू बॉक्स */
+        .sovereign-rect-box {
+            background: linear-gradient(135deg, #0a0d14, #111522); border-radius: 16px;
+            padding: 20px; text-align: left; min-height: 160px; max-height: 200px;
+            overflow-y: auto; color: #ddd; font-size: 14px; line-height: 1.6; margin: 5px auto; width: 88%;
+            position: relative;
+            border-top: 1px solid #222; border-bottom: 1px solid #222;
+            border-left: 3px solid #ffca28; border-right: 3px solid #ffca28;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            animation: sideGlow 2.5s linear infinite alternate;
+        }
+        @keyframes sideGlow { 0% { border-left-color: #ffca28; border-right-color: #ffca28; } 100% { border-left-color: #fff3b0; border-right-color: #fff3b0; } }
+        .app-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); font-size: 18px; font-weight: 900; color: rgba(255, 255, 255, 0.12); white-space: nowrap; pointer-events: none; }
+
+        /* Lovable स्टाइल प्रीमियम सर्च बार */
+        .lovable-search-area { width: 95%; position: relative; display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
+        .lovable-input-wrapper { width: 100%; background: #11141b; border: 2px solid #ffca28; border-radius: 24px; padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); box-sizing: border-box; }
+        .main-textarea { width: 100%; background: transparent; border: none; color: #fff; font-size: 14px; outline: none; resize: none; }
+        .main-textarea::placeholder { color: #555e70; }
+
+        /* क्विक एक्शन कंट्रोल्स और माइक के बगल में घूमता छोटा क्राउन */
+        .controls-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .controls-left { display: flex; align-items: center; gap: 12px; }
+        .action-plus { font-size: 22px; color: #ffca28; cursor: pointer; font-weight: bold; }
+        .action-build { background: #1c1f26; border: 1px solid #333; color: #aaa; padding: 5px 10px; border-radius: 12px; font-size: 11px; cursor: pointer; }
+        .controls-right { display: flex; align-items: center; gap: 10px; }
+        .action-mic { color: #ffca28; font-size: 15px; cursor: pointer; }
+        
+        /* माइक के ठीक बगल में हमेशा 3D स्टाइल में घूमने वाला छोटा ताज */
+        .search-mini-crown { font-size: 16px; display: inline-block; cursor: pointer; animation: spinY 3s linear infinite; filter: drop-shadow(0 0 4px #ffca28); }
+
+        /* डायनेमिक सबमिट/लोडर बटन */
+        .action-submit { background: #ffca28; border: none; color: #000; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .action-submit.ai-loading { background: #11141b !important; border: 2px solid #ffca28 !important; color: #ffca28 !important; animation: spinLoader 1s linear infinite !important; box-shadow: 0 0 15px #ffca28 !important; }
+
+        /* प्लस (+) दबाने पर खुलने वाला पॉप-अप मेन्यू */
+        .lovable-popup-menu { display: none; position: absolute; bottom: 75px; left: 0; width: 70%; background: #121620; border: 1px solid #ffca28; border-radius: 16px; padding: 6px; box-shadow: 0 15px 35px rgba(0,0,0,0.8); z-index: 10; text-align: left; }
+        .pop-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; font-size: 13px; color: #ccc; cursor: pointer; border-radius: 10px; margin: 2px 0; }
+        .pop-item:hover { background: #2563eb; color: #fff; }
+
+        /* नीचे साइड में नया कर्व्ड रेक्टेंगल स्टेट्स बॉक्स */
+        .sultan-stats-container { width: 95%; background: rgba(17, 20, 27, 0.85); border: 1px solid rgba(255, 202, 40, 0.4); border-radius: 18px; padding: 12px; margin-top: auto; margin-bottom: 110px; box-sizing: border-box; }
+        .stats-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        .stat-item { flex: 1; min-width: 45%; background: #151922; border: 1px solid #222c3d; border-radius: 10px; padding: 8px; text-align: center; box-sizing: border-box; cursor: pointer; }
+        .stat-item:hover { border-color: #ffca28; background: #1b212e; }
+        .stat-val { font-size: 14px; font-weight: bold; color: #ffca28; }
+        .stat-lbl { font-size: 9px; color: #7a8aa3; margin-top: 2px; text-transform: uppercase; }
+
+        /* वीआईपी सर्वर्स चयन पॉप-अप और कर्व्ड रेक्टेंगल UPI पेमेंट + QR बॉक्स */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 10000; }
+        .modal-card { background: #11141a; border: 2px solid #ffca28; width: 85%; max-width: 380px; padding: 20px; border-radius: 16px; text-align: center; max-height: 95vh; overflow-y: auto; }
+        .tier-option { background: #18191c; border: 1px solid #333; padding: 10px; margin: 8px 0; border-radius: 8px; cursor: pointer; text-align: left; }
+        .tier-option.selected-tier { border-color: #ffca28; background: #1c212c; }
+        .tier-title { font-weight: bold; color: #ffca28; margin: 0; font-size: 14px; }
+        .tier-desc { font-size: 11px; color: #aaa; margin: 4px 0 0 0; }
+        
