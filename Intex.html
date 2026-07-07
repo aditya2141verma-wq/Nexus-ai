@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus AI - Sovereign Edition</title>
+    <style>
+        body { margin: 0; background: #05070a; color: #fff; font-family: system-ui, sans-serif; display: flex; justify-content: center; }
+        .app-frame { width: 100vw; max-width: 450px; height: 100vh; background: #090b0e; position: relative; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* टॉप बार */
+        .top-header { display: flex; justify-content: space-between; padding: 15px 20px; align-items: center; border-bottom: 1px solid #161b26; background: #0b0f17; }
+        .brand-title { font-size: 20px; font-weight: bold; color: #ffca28; }
+        .settings-dot-btn { font-size: 22px; color: #ffca28; cursor: pointer; }
+        
+        .settings-dropdown-menu { display: none; position: absolute; top: 55px; right: 20px; width: 180px; background: #11141b; border: 1px solid #ffca28; border-radius: 12px; padding: 6px; z-index: 100; }
+        .settings-opt { padding: 10px 12px; font-size: 13px; color: #ccc; cursor: pointer; text-align: left; }
+
+        /* मुख्य एरिया */
+        .main-container { flex-grow: 1; display: flex; flex-direction: column; align-items: center; padding: 15px; text-align: center; }
+        .token-counter-badge { font-size: 11px; color: #ffca28; background: #11141b; border: 1px solid #ffca28; padding: 5px 15px; border-radius: 20px; margin-bottom: 15px; font-weight: bold; }
+        .mind-headline { font-size: 18px; font-weight: 600; margin-bottom: 15px; color: #f0f0f0; }
+        
+        .view-section { display: none; width: 100%; }
+        .view-section.active-view { display: block; }
+
+        /* गोल्डन साइड स्ट्रोक वाला प्रिव्यू बॉक्स */
+        .sovereign-rect-box {
+            background: #0d1117; border-radius: 14px; padding: 15px; text-align: left; 
+            min-height: 160px; max-height: 200px; overflow-y: auto; color: #ddd; font-size: 14px; 
+            margin: 10px auto; width: 90%; box-sizing: border-box;
+            border-top: 1px solid #222; border-bottom: 1px solid #222;
+            border-left: 4px solid #ffca28; border-right: 4px solid #ffca28;
+        }
+
+        /* इनपुट बॉक्स */
+        .lovable-search-area { width: 95%; margin-bottom: 15px; }
+        .lovable-input-wrapper { width: 100%; background: #11141b; border: 2px solid #ffca28; border-radius: 20px; padding: 12px; display: flex; flex-direction: column; gap: 10px; box-sizing: border-box; }
+        .main-textarea { width: 100%; background: transparent; border: none; color: #fff; font-size: 14px; outline: none; resize: none; font-family: inherit; }
+        
+        .controls-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .controls-left { font-size: 22px; color: #ffca28; cursor: pointer; font-weight: bold; }
+        .action-submit { background: #ffca28; border: none; color: #000; width: 34px; height: 34px; border-radius: 50%; font-weight: bold; font-size: 16px; cursor: pointer; }
+
+        /* पासेस और स्टेट्स */
+        .premium-passes-section { width: 90%; display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .pass-card { background: #111522; border: 1px solid rgba(255, 202, 40, 0.3); border-radius: 12px; padding: 12px; text-align: left; cursor: pointer; }
+        .fixed-banner-ad-box { width: 90%; height: 60px; background: #111522; border: 1px dashed rgba(255, 252, 252, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #44536e; margin-top: 10px; }
+
+        .sultan-stats-container { width: 90%; background: #11141b; border: 1px solid rgba(255, 202, 40, 0.4); border-radius: 16px; padding: 12px; margin-top: auto; margin-bottom: 95px; box-sizing: border-box; }
+        .stats-grid { display: flex; justify-content: space-around; margin-bottom: 10px; }
+        .stat-val { font-size: 14px; font-weight: bold; color: #ffca28; } .stat-lbl { font-size: 9px; color: #7a8aa3; text-transform: uppercase; }
+        .btn-share-kingdom { width: 100%; background: linear-gradient(45deg, #d4a373, #ffca28); color: #000; font-weight: bold; border: none; padding: 10px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+
+        /* 30 सेकंड का एड स्क्रीन */
+        .interstitial-ad-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0b0f19; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 20000; text-align: center; }
+        .ad-box-frame { width: 85%; max-width: 340px; background: #121824; border: 2px solid #ffca28; padding: 20px; border-radius: 16px; }
+        .skip-ad-btn { background: #238636; border: none; color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; margin-top: 15px; display: none; width: 100%; cursor: pointer; }
+
+        .bottom-nav { position: absolute; bottom: 35px; left: 5%; width: 90%; display: flex; justify-content: space-between; align-items: center; z-index: 5; }
+        .tabs-pill { background: #11141a; border: 2px solid #ffca28; border-radius: 30px; padding: 4px; display: flex; width: 65%; }
+        .tab { flex: 1; background: transparent; border: none; color: #888; padding: 10px 0; font-weight: bold; border-radius: 25px; cursor: pointer; }
+        .tab.active { background: linear-gradient(45deg, #d4a373, #ffca28); color: #000; }
+        .circle-btn { background: #11141a; border: 1px solid #ffca28; color: #ffca28; width: 40px; height: 44px; border-radius: 50%; }
+    </style>
+</head>
+<body>
+
+    <div class="interstitial-ad-overlay" id="interstitial-ad">
+        <div class="ad-box-frame">
+            <h3 style="color: #ffca28; margin: 10px 0;">30s PREMIUM AD</h3>
+            <p style="color: #bbb; font-size: 13px;">Nexus AI सर्वर लोड हो रहा है...</p>
+            <div style="font-size: 13px; color: #ffca28; font-weight: bold;" id="ad-countdown-txt">Skip Ad in 30 seconds...</div>
+            <button class="skip-ad-btn" id="skip-ad-trigger" onclick="closeInterstitialAd()">Skip Ad ❯</button>
+        </div>
+    </div>
+
+    <div class="app-frame">
+        <div class="top-header">
+            <div class="brand-title">NEXUS MATRIX</div>
+            <div class="settings-dot-btn" onclick="toggleSettingsMenu()">⋮</div>
+            <div class="settings-dropdown-menu" id="settings-popup">
+                <div class="settings-opt" onclick="triggerCustomerLogin()">👤 Customer Login</div>
+                <div class="settings-opt" onclick="triggerLogout()">❌ Logout</div>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <div class="token-counter-badge" id="token-display-badge">Remaining Free Tokens: 3</div>
+            <div class="mind-headline">What's on your mind, Sultan?</div>
+
+            <div class="lovable-search-area">
+                <div class="lovable-input-wrapper">
+                    <textarea class="main-textarea" rows="2" placeholder="Ask Nexus AI to forge legacy layout..." id="user-input" oninput="handleTyping()"></textarea>
+                    <div class="controls-row">
+                        <div class="controls-left" onclick="togglePopupMenu()">+</div>
+                        <div class="controls-right"><button class="action-submit" id="submit-btn" onclick="submitPrompt()">↑</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-preview" class="view-section active-view">
+                <div class="sovereign-rect-box" id="preview-text-box">
+                    Welcome to Nexus AI Matrix. Forge your legacy with multi-model speed. All systems are active under your decree.
+                </div>
+            </div>
+
+            <div class="premium-passes-section">
+                <div class="pass-card"><strong>Silver Node ($49 / Month)</strong></div>
+                <div class="pass-card"><strong>Gold Combo Pass ($99 / Month)</strong></div>
+                <div class="pass-card"><strong>Sovereign VIP Pass ($199 / Month)</strong></div>
+            </div>
+
+            <div class="fixed-banner-ad-box">[ SPONSOR HIGH-ECPM BANNER AD ]</div>
+
+            <div class="sultan-stats-container">
+                <div class="stats-grid">
+                    <div class="stat-item"><div class="stat-val">1.4M+</div><div class="stat-lbl">Downloads</div></div>
+                    <div class="stat-item"><div class="stat-val">99.8%</div><div class="stat-lbl">Success</div></div>
+                </div>
+                <button class="btn-share-kingdom" onclick="shareWithKingdom()">👑 Share with Kingdom</button>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <div class="tabs-pill">
+                <button class="tab active">Preview</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let freeTokens = 3; let isPremiumUser = false;
+    function toggleSettingsMenu() { const p = document.getElementById('settings-popup'); p.style.display = (p.style.display === "block") ? "none" : "block"; }
+    function handleTyping() { const i = document.getElementById('user-input'); document.getElementById('submit-btn').style.background = (i.value.trim() !== "") ? "#fff" : "#ffca28"; }
+    function submitPrompt() {
+        const i = document.getElementById('user-input'); if (i.value.trim() !== "") {
+            if (freeTokens > 0) { freeTokens--; document.getElementById('token-display-badge').innerText = `Remaining Free Tokens: ${freeTokens}`; alert("Compiled successfully!"); i.value = ""; } 
+            else { document.getElementById('interstitial-ad').style.display = "flex"; }
+        }
+    }
+  
